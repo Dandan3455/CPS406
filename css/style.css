@@ -9,17 +9,21 @@ body {
   color: white;
   display: flex;
   align-items: center;
+  justify-content: space-between;  /* 横向三部分均匀分布 */
   padding: 1em;
 }
+
+.nav-center {
+  display: flex;
+  gap: 4em; /* 控制中间链接之间的间距，可调整 */
+  margin: 0 auto;
+}
+
 .navbar .brand {
   font-size: 1.2em;
   font-weight: bold;
 }
-.nav-links {
-  display: flex;
-  gap: 2em;
-  margin-left: auto;
-}
+
 .navbar a {
   color: white;
   text-decoration: none;
