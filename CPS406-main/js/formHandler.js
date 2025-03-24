@@ -41,6 +41,8 @@ function submitForm(events, map, renderEvents) {
   const postalCode = document.getElementById('postalCode').value.trim();
   const customTypeInput = document.getElementById('customType').value.trim();
   const imageInput = document.getElementById('image');
+  const solved = false;
+  const address = null;
   let imageURL = '';
   if (imageInput.files && imageInput.files[0]) {
     // Create an object URL for preview; note: for real storage, you'll need to upload the file.
