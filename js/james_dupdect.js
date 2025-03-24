@@ -18,11 +18,28 @@ let events = [];
       return R * c;
     }
 
-// Determine status based on duplicate detection.
+map.on('click', (e) => {
+      const title = prompt('Description:');
+      if (title) {
+        // Check if there's an existing event within the threshold distance.
+        let duplicateOf = null;
+        events.forEach(event => {
+          if (event.latlng) {
+            const distance = getDistance(event.latlng, e.latlng);
+            if (distance < DUPLICATE_THRESHOLD && !duplicateOf) {
+              duplicateOf = event.title;
+            }
+          }
+        });
+
+        // Determine status based on duplicate detection.
         const status = duplicateOf ? 'duplicated event' : 'pending';
         // Create marker on the map.
         const marker = L.marker(e.latlng).addTo(map).bindPopup(title);
         // Add event with determined status and duplicateOf reference.
         events.push({ title, status, latlng: e.latlng, duplicateOf: duplicateOf });
         renderEvents();
+      }
+    });
+    
     
