@@ -48,3 +48,4 @@ events.forEach(e => {
 });
 
 renderEvents();
+
