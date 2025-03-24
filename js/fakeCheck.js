@@ -54,6 +54,6 @@ function exceededSubmissionLimit() {
 // G.4: Postal code format check (must match format: A1A1A1, no spaces)
 function isOutsideServiceArea(postalCode) {
   const cleaned = postalCode.toUpperCase().replace(/\s+/g, "");
-  const validPostalRegex = /^[A-Z]\d[A-Z]\d[A-Z]\d$/;
+  const validPostalRegex = /^[A-Z]\d[A-Z]\s?\d[A-Z]\d$/;
   return !validPostalRegex.test(cleaned);
 }
