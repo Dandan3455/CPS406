@@ -25,5 +25,4 @@ let events = [];
         // Add event with determined status and duplicateOf reference.
         events.push({ title, status, latlng: e.latlng, duplicateOf: duplicateOf });
         renderEvents();
-      }
-    });
+    
