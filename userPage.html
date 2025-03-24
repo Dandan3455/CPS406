@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cypress Report System</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <div class="navbar">
+    <div class="brand">Cypress</div>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Event</a>
+      <a href="#">Contact us</a>
+    </div>
+  </div>
+
+  <!-- 页面主体 -->
+  <div id="container">
+    <div id="map"></div>
+    <div id="sidebar">
+      <button class="report-button" id="reportBtn">Report an event</button>
+      <h2>Ongoing Events</h2>
+      <div id="eventList"></div>
+    </div>
+  </div>
+
+  <!-- 遮罩层 -->
+  <div id="overlay"></div>
+
+  <!-- 弹出报告表单 -->
+  <div id="reportModal">
+    <h3>Report an Issue</h3>
+    <input type="text" id="desc" placeholder="Description" required />
+    <select id="type">
+      <option value="Pothole">Pothole</option>
+      <option value="Garbage">Garbage</option>
+      <option value="Streetlight">Streetlight</option>
+    </select>
+    <input type="file" id="image" />
+    <input type="email" id="email" placeholder="Your email (optional)" />
+    <button id="submitForm">Submit</button>
+    <button onclick="closeModal()">Cancel</button>
+  </div>
+
+  <!-- 外部 JS 脚本 -->
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/formHandler.js"></script>
+  <script src="js/mapHandler.js"></script>
+</body>
+</html>
