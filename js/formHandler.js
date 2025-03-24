@@ -33,3 +33,4 @@ function submitForm(events, map, renderEvents) {
   closeModal();
   alert("Thanks for your report!");
 }
+
