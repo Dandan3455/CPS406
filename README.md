@@ -70,7 +70,7 @@ Javascript, HTML
 Setting up:
 This is for localy hosting server on your own computer. It is ideal to launch it with node.js, but it is currently possible to directly opening up the html file without losing any functionality (except for saving/syncing data across sessions, which you need the server) as of 25 March 2025.
 1. Make sure you have node.js installed, if not, install it on this website https://nodejs.org/en/download.
-2. open termianl and navigate to root directory of the projet
-3. run "npm install"
-4. run "npm start"
-5. go to a web browser and type in http://localhost:3000/ and the website should be there
+2. Open termianl and navigate to root directory of the project
+3. Run "npm install"
+4. Run "npm start"
+5. Go to a web browser and type in http://localhost:3000/, and the website should be there
