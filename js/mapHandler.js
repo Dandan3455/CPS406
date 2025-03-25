@@ -5,8 +5,39 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 // 模拟事件数据（如果 data.js 存在则使用）
-let events = typeof mockReports !== 'undefined' ? [...mockReports] : [];
+// could not get this line to work, wont read from data.js no matter what i do, so i wrote some other code that fetches form the json 
+//let events = typeof mockReports !== 'undefined' ? [...mockReports] : [];
+let events = [];// make event an empty list and fetch it from the json file on start
+fetch('/events.json')
+  .then(res => res.json())
+  .then(data => {
+    events = data;
+    renderEvents();
+    // Draw initial markers from the JSON
+    events.forEach(e => L.marker(e.latlng).addTo(map).bindPopup(e.title));
+    // Then connect to socket
+    initSocket();
+  })
+.catch(err => console.error('Failed to load events.json:', err));
+window.socket = io();
+function initSocket() { // for storing json on node server
+  window.socket.on('initialEvents', serverEvents => {
+    events = serverEvents;
+    renderEvents();
+    events.forEach(e => L.marker(e.latlng).addTo(map).bindPopup(e.title));
+  });
 
+  window.socket.on('reportAdded', report => {
+    events.push(report);
+    L.marker(report.latlng).addTo(map).bindPopup(report.title);
+    renderEvents();
+  });
+
+  window.socket.on('statusToggled', ({ index, status }) => {
+    events[index].status = status;
+    renderEvents();
+  });
+}
 const eventList = document.getElementById('eventList');
 
 // 渲染事件列表
@@ -16,10 +47,6 @@ function renderEvents() {
     const div = document.createElement('div');
     div.className = 'event' + (e.status === 'done' ? ' done' : '');
     div.innerHTML = `<strong>${e.title}</strong><br>Type: ${e.type}<br>Status: ${e.status}<br>`;
-    
-    
-    
-    
     eventList.appendChild(div);
   });
 }
