@@ -18,11 +18,13 @@ Therefore the system will implement the following functionality:
 		- Contact related department and notify them of the issue
 
 Group Members:
-James Fang		Student Number: 501240207
-Dandan Liu		Student Number: 501273861
-Shoaib Sheriff		Student Number: 501172587
-Sara Gomes		Student Number: 501184278
-Elton Wong		Student Number: 501165692
+| Name            | Student Number |
+|-----------------|----------------|
+| James Fang      | 501240207      |
+| Dandan Liu      | 501273861      |
+| Shoaib Sheriff  | 501172587      |
+| Sara Gomes      | 501184278      |
+| Elton Wong      | 501165692      |
 
 Project directory:
 CPS406_main
@@ -33,18 +35,27 @@ CPS406_main
       |-formHandler.js
       |-james_duplicate.js
       |-mapHandler.js
-    |Data.json 
+    |Data.json
+    |README.md
+    |server.js
+    |package.json 
     |userPage.html
+    
+    
 
 Project Content:
-css - a folder of all css files
-style.css - css rules to style/format the webpage
-js - a folder for all js script that implements functions in our webpage
-fakeCheck.js - a js script containing functions to check if reports are valid
-formHandler.js - a js script containing functions related to the report from (submitting, saving, checking for errors)
-james_duplicate.js - a js script containing functions to detect duplicate reports
-mapHandler.js - a js script containing functions regarding the map (open form on click, passing coordinates, show pins for reported events)
+**css** - a folder of all css files
+	style.css - css rules to style/format the webpage
+
+**js** - a folder for all js script that implements functions in our webpage
+	fakeCheck.js - a js script containing functions to check if reports are valid
+	formHandler.js - a js script containing functions related to the report from (submitting, saving, checking for errors)
+	james_duplicate.js - a js script containing functions to detect duplicate reports
+	mapHandler.js - a js script containing functions regarding the map (open form on click, passing coordinates, show pins for reported events)
+ 
 Data.json - a json file with all the test data to mimic previous user reports
+server.js - a js files containg needed commands to host a local server
+package.json - a json file with needed package for server.js to function properly
 userPage.html - the main webpage that the user interacts with
 
 Submission Content for Sprint 2:
@@ -54,7 +65,7 @@ Submission Content for Sprint 2:
 4. Test Plan
 
 Language Used:
-Javascript
+Javascript, HTML
 
 Setting up:
 This is for localy hosting server on your own computer. It is ideal to launch it with node.js, but it is currently possible to directly opening up the html file without losing any functionality (except for saving/syncing data across sessions, which you need the server) as of 25 March 2025.
