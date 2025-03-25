@@ -1,14 +1,10 @@
+// js/james_duplicate.js
 
-// james_duplicate.js
+(function() {
+  // Duplicate detection threshold in meters.
+  const DUPLICATE_THRESHOLD = 100;
 
-
-
-
-(function(){
-  // Define the duplicate detection threshold in meters.
-  const DUPLICATE_THRESHOLD = 50;
-  
-  // Haversine formula: calculates the distance (in meters) between two lat/lng points.
+  // Haversine formula: calculates distance (in meters) between two lat/lng points.
   function getDistance(latlng1, latlng2) {
     const R = 6371e3; // Earth's radius in meters.
     const lat1 = latlng1.lat * Math.PI / 180;
@@ -21,34 +17,65 @@
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
   }
-  
-  // Override the push method of the global 'events' array to perform duplicate detection.
-  if (typeof events !== "undefined" && Array.isArray(events)) {
-    const originalPush = events.push;
-    events.push = function(newEvent) {
-      // Check existing events for duplicates.
-      let duplicateOf = null;
-      for (let i = 0; i < this.length; i++) {
-        const event = this[i];
-        if (event.latlng && newEvent.latlng) {
-          const distance = getDistance(event.latlng, newEvent.latlng);
-          if (distance < DUPLICATE_THRESHOLD && !duplicateOf) {
-            duplicateOf = event.title;
-            break;
-          }
+
+  // Ensure global events array exists on window.
+  if (typeof window.events === "undefined") {
+    console.warn("Global 'events' array not found. Creating one on window.events.");
+    window.events = [];
+  }
+  // Force local variable events to refer to window.events.
+  events = window.events;
+
+  // Save the original push method.
+  const originalPush = events.push;
+
+  // Override the push method so that new events get marked as duplicate if needed.
+  events.push = function(newEvent) {
+    let duplicateOf = null;
+    // Loop through current events.
+    for (let i = 0; i < events.length; i++) {
+      const event = events[i];
+      if (event.latlng && newEvent.latlng) {
+        const distance = getDistance(event.latlng, newEvent.latlng);
+        if (distance < DUPLICATE_THRESHOLD && event.type === newEvent.type) {
+          duplicateOf = event.title;
+          break;
         }
+
       }
-      // If a duplicate is detected, mark the new event accordingly.
-      if (duplicateOf) {
-        newEvent.status = "duplicated event";
-        newEvent.duplicateOf = duplicateOf;
+    }
+    if (duplicateOf) {
+      newEvent.status = "duplicate";
+      newEvent.duplicateOf = duplicateOf;
+      newEvent.title = newEvent.title + " (duplication of \"" + duplicateOf + "\")";
+
+    }
+    return originalPush.call(events, newEvent);
+  };
+
+  // Optionally override renderEvents to style duplicate events with an orange background.
+  if (typeof window.renderEvents === "function") {
+    const originalRenderEvents = window.renderEvents;
+    window.renderEvents = function() {
+      originalRenderEvents();
+      // After the original render, style duplicate events.
+      const eventList = document.getElementById("eventList");
+      if (eventList) {
+        // Iterate through child divs.
+        Array.from(eventList.children).forEach(div => {
+          if (div.innerHTML.indexOf("Status: duplicate") !== -1) {
+            div.style.backgroundColor = "orange";
+          }
+
+        });
       }
-      // Otherwise, keep the original status (assumed to be set by caller, e.g., "pending").
-      return originalPush.call(this, newEvent);
     };
   }
-  
-  // Optionally expose functions/constants globally if needed.
+
+  // Expose helper functions/constants globally if needed.
   window.getDistance = getDistance;
   window.DUPLICATE_THRESHOLD = DUPLICATE_THRESHOLD;
 })();
+
+
+
