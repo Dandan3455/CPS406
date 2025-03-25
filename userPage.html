@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <!-- 顶部导航栏 -->
+
   <div class="navbar">
     <div class="nav-item">Cypress</div>
     <div class="nav-item"><a href="#">Home</a></div>
@@ -16,7 +16,7 @@
     <div class="nav-item"><a href="#">Contact us</a></div>
   </div>
   
-  <!-- 页面主体 -->
+
   <div id="container">
     <div id="map"></div>
     <div id="sidebar">
@@ -26,17 +26,17 @@
     </div>
   </div>
 
-  <!-- 遮罩层 -->
+
   <div id="overlay"></div>
 
-  <!-- 弹出报告表单 -->
+
 <div id="reportModal">
   <h3>Report an Issue</h3>
 
-  <!-- 邮编 -->
+
   <input type="text" id="postalCode" placeholder="Postal Code (e.g., M5G 2C3)" required />
 
-  <!-- 问题类型 -->
+
 <select id="type" onchange="handleTypeChange()">
   <option value="Pothole">Pothole</option>
   <option value="Garbage">Garbage</option>
@@ -45,10 +45,10 @@
   <option value="Noise">Noise Complaint</option>
   <option value="Water Leak">Water Leak</option>
   <option value="Broken Sidewalk">Broken Sidewalk</option>
-  <option value="Other">Other</option> <!-- 新增 -->
+  <option value="Other">Other</option> 
 </select>
 
-<!-- 用户填写“Other”类型用的输入框 -->
+
 <input
   type="text"
   id="customType"
@@ -56,30 +56,27 @@
   style="display: none; margin-top: 5px;"
 />
 
-  <!-- 描述 -->
+
   <textarea id="desc" placeholder="Describe the issue in detail" rows="4" required></textarea>
 
-  <!-- 图片上传 -->
+
   <input type="file" id="image" />
   <img id="imagePreview" style="display: none; max-width: 100px; margin-top: 5px;" />
 
-  <!-- 邮箱 -->
+
   <input type="email" id="email" placeholder="Your email (optional)" />
 
-  <!-- 提交按钮 -->
+
   <button id="submitForm">Submit</button>
   <button onclick="closeModal()">Cancel</button>
 </div>
 
 
-
-  
-  <!-- 外部 JS 脚本 -->
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script src="js/data.js"></script>
   <script src="js/formHandler.js"></script>
   <script src="js/fakeCheck.js"></script>
   <script src="js/mapHandler.js"></script>
-  <script src="js/james_dupdetec.js"></script>
+  <script src="js/james_duplicate.js"></script>
 </body>
 </html>

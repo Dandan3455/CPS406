@@ -16,13 +16,10 @@ function renderEvents() {
     const div = document.createElement('div');
     div.className = 'event' + (e.status === 'done' ? ' done' : '');
     div.innerHTML = `<strong>${e.title}</strong><br>Type: ${e.type}<br>Status: ${e.status}<br>`;
-    const btn = document.createElement('button');
-    btn.innerText = e.status === 'pending' ? 'Done' : 'To be done';
-    btn.onclick = () => {
-      events[i].status = events[i].status === 'pending' ? 'done' : 'pending';
-      renderEvents();
-    };
-    div.appendChild(btn);
+    
+    
+    
+    
     eventList.appendChild(div);
   });
 }
