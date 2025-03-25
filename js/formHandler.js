@@ -77,12 +77,13 @@ function submitForm(events, map, renderEvents) {
     address:      address || '',
     latlng:       latlng
   };
-  socket.emit('newReport', newReport);// storing report in json on node server
-  /*
-  const marker = L.marker(latlng).addTo(map).bindPopup(desc);
-  events.push({ title: desc, type, status: 'pending', latlng, email, postalCode });
-  renderEvents();
-  */
+    if (window.socket?.emit) {
+    socket.emit('newReport', newReport);// storing report in json on node server
+  } else {
+    const marker = L.marker(latlng).addTo(map).bindPopup(desc);// store locally if user is not hosting server
+    events.push({ title: desc, type, status: 'pending', latlng, email, postalCode });
+    renderEvents();
+}
   closeModal();
   alert("Thanks for your report!");
 }
