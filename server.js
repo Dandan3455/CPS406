@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname)));
 
 // Serve the main HTML page explicitly
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'userPage.html'));
+    res.sendFile(path.join(__dirname, 'userPage.html'));
   });
 
 // Load initial event data from JSON
