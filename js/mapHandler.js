@@ -16,10 +16,12 @@ fetch('/events.json')
     // Draw initial markers from the JSON
     events.forEach(e => L.marker(e.latlng).addTo(map).bindPopup(e.title));
     // Then connect to socket
-    initSocket();
+    if (typeof io !== 'undefined') {// makesure io exist, that means it is launched through node.js, if not, all server related functions will be stopped and store reports locally
+      window.socket = io();
+      initSocket();
+    }
   })
 .catch(err => console.error('Failed to load events.json:', err));
-window.socket = io();
 function initSocket() { // for storing json on node server
   window.socket.on('initialEvents', serverEvents => {
     events = serverEvents;
