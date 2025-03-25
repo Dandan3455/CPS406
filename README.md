@@ -18,11 +18,11 @@ Therefore the system will implement the following functionality:
 		- Contact related department and notify them of the issue
 
 Group Members:
-James Fang
-Dandan Liu
-Shoaib Sheriff
-Sara Gomes
-Elton Wong
+James Fang		Student Number: 501240207
+Dandan Liu		Student Number: 501273861
+Shoaib Sheriff		Student Number: 501172587
+Sara Gomes		Student Number: 501184278
+Elton Wong		Student Number: 501165692
 
 Project directory:
 CPS406_main
@@ -39,7 +39,6 @@ CPS406_main
 Project Content:
 css - a folder of all css files
 style.css - css rules to style/format the webpage
-
 js - a folder for all js script that implements functions in our webpage
 fakeCheck.js - a js script containing functions to check if reports are valid
 formHandler.js - a js script containing functions related to the report from (submitting, saving, checking for errors)
@@ -58,8 +57,7 @@ Language Used:
 Javascript
 
 Setting up:
-This is for localy hosting server on your own computer. The local hosting is nessesary for the form page to work properly, just launching the html page will not include all functionality.
-
+This is for localy hosting server on your own computer. It is ideal to launch it with node.js, but it is currently possible to directly opening up the html file without losing any functionality (except for saving/syncing data across sessions, which you need the server) as of 25 March 2025.
 1. Make sure you have node.js installed, if not, install it on this website https://nodejs.org/en/download.
 2. open termianl and navigate to root directory of the projet
 3. run "npm install"
