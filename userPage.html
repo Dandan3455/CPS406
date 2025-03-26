@@ -6,6 +6,7 @@
   <title>Cypress Report System</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
@@ -14,6 +15,30 @@
     <div class="nav-item"><a href="#">Home</a></div>
     <div class="nav-item"><a href="#">Event</a></div>
     <div class="nav-item"><a href="#">Contact us</a></div>
+  </div>
+
+  <div class="search_postal_code">
+    <input type="text" name="postal_code" id="postal_code" placeholder="Postal Code"/>
+    <i class="fa-solid fa-magnifying-glass" id="searchPostalCode"></i>
+    <div class="range-container">
+      <div class="range-flex">
+        <label for="range">Range</label>
+        <input
+          type="range"
+          id="range"
+          name="range"
+          min="100"
+          max="1000"
+          value="200"
+          step="100"
+        />
+        <p id="range_value">200</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="eventInRange" class="events-in-range">
+    <i class="fa-solid fa-xmark" onclick="closeModal()"></i>
   </div>
 
   <div id="container">
@@ -44,7 +69,7 @@
   <option value="Noise">Noise Complaint</option>
   <option value="Water Leak">Water Leak</option>
   <option value="Broken Sidewalk">Broken Sidewalk</option>
-  <option value="Other">Other</option> 
+  <option value="Other">Other</option>
 </select>
 
 
@@ -78,5 +103,6 @@
   <script src="js/fakeCheck.js"></script>
   <script src="js/mapHandler.js"></script>
   <script src="js/james_duplicate.js"></script>
+  <script src="js/searchBar.js"></script>
 </body>
 </html>

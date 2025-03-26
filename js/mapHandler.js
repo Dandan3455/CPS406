@@ -14,7 +14,7 @@ fetch('/events.json')
   .then(data => {
     // Clear the existing global events array but keep the same reference.
     events.length = 0;
-    data.forEach(item => events.push(item)); 
+    data.forEach(item => events.push(item));
     renderEvents();
     // Draw initial markers from the JSON.
     events.forEach(e => L.marker(e.latlng).addTo(map).bindPopup(e.title));
@@ -77,6 +77,11 @@ document.getElementById('reportBtn').addEventListener('click', () => {
 document.getElementById('submitForm').addEventListener('click', () => {
   submitForm(events, map, renderEvents);
 });
+
+//When the search bar button is clicked
+document.getElementById('searchPostalCode').addEventListener('click', () => {
+  searchPostalCode(map)
+})
 
 // Draw markers for any existing events.
 events.forEach(e => {

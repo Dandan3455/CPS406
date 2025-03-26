@@ -14,6 +14,94 @@ body {
   font-weight: bold;
 }
 
+.search_postal_code {
+  position: absolute;
+  top: 50px;
+  left: 18%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 10px;
+  background-color: transparent;
+  z-index: 1000;
+}
+
+.search_postal_code input[type="text"] {
+  width: 380px;
+  margin: 5px auto;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+  border-radius: 25px;
+  background-color: white;
+}
+
+.search_postal_code i {
+  position: fixed;
+  top: 29px;
+  left: 90%;
+}
+
+.search_postal_code i:hover {
+  cursor: pointer;
+}
+
+.range-container {
+  width: 300px;
+  border-radius: 25px;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+  font-size: 16px;
+}
+
+.range-flex {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+
+.events-in-range {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 600px;
+  max-width: 90%;
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  display: none;
+  overflow-y: scroll;
+}
+
+/* Close Icon */
+.events-in-range i.fa-xmark {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+  z-index: 5000;
+}
+
+.events-in-range i.fa-xmark:hover {
+  color: black;
+}
+
+.displayReport {
+  padding: 10px;
+  margin: 10px;
+  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2); /* Even shadow all around */
+  border-radius: 8px; /* Optional: Smooth edges */
+}
+
 .nav-item {
   display: flex;
   justify-content: center;
