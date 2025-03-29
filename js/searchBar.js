@@ -124,7 +124,7 @@ function searchPostalCode(map) {
         if (eventsInRange.length !== 0) {
             eventsInRange = []
             eventsInRangeDOM.innerHTML = `<div>
-                <i class="fa-solid fa-xmark" onclick="closeModal()"></i>
+                <i class="fa-solid fa-xmark" onclick="closeEventInRangeModal()"></i>
             </div>`
         }
 
@@ -191,6 +191,6 @@ function getMapRadius() {
     return 1.20 * range
 }
 
-function closeModal() {
+function closeEventInRangeModal() {
     document.getElementById("eventInRange").style.display = "none"
 }
