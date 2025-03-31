@@ -38,7 +38,7 @@
       if (event.latlng && newEvent.latlng) {
         const distance = getDistance(event.latlng, newEvent.latlng);
         if (distance < DUPLICATE_THRESHOLD && event.type === newEvent.type) {
-          duplicateOf = event.title;
+          duplicateOf = event.desc;
           break;
         }
 
@@ -47,7 +47,7 @@
     if (duplicateOf) {
       newEvent.status = "duplicate";
       newEvent.duplicateOf = duplicateOf;
-      newEvent.title = newEvent.title + " (duplication of \"" + duplicateOf + "\")";
+      newEvent.desc = newEvent.desc + " (duplication of \"" + duplicateOf + "\")";
 
     }
     return originalPush.call(events, newEvent);
