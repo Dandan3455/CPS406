@@ -7,31 +7,6 @@ const spamList = [
   "fake", "not real", "this is a joke", "xxxxx", "bad"
 ];
 
-// Main validation function: returns true if the report should be blocked
-function isFakeReport(report) {
-  if (isMissingField(report)) {
-    alert("Missing required fields. Please complete all information.");
-    return true;
-  }
-
-  if (containsOffensiveContent(report.desc)) {
-    alert("Invalid content in the description.");
-    return true;
-  }
-
-  if (exceededSubmissionLimit()) {
-    alert("Too many reports submitted. Please wait.");
-    return true;
-  }
-
-  if (isOutsideServiceArea(report.postalCode)) {
-    alert("Invalid postal code format or outside supported area.");
-    return true;
-  }
-
-  return false; // All checks passed
-}
-
 // G.1: Required fields check
 function isMissingField(report) {
   return !report.desc || !report.latlng;
@@ -51,9 +26,77 @@ function exceededSubmissionLimit() {
   return submissionTimes.length > 3;
 }
 
-// G.4: Postal code format check (must match format: A1A1A1, no spaces)
+// G.4: Postal code format check (must match format: A1A1A1, no space or with space)
 function isOutsideServiceArea(postalCode) {
   const cleaned = postalCode.toUpperCase().replace(/\s+/g, "");
-  const validPostalRegex = /^[A-Z]\d[A-Z]\s?\d[A-Z]\d$/;
+  const validPostalRegex = /^[A-Z]\d[A-Z]\d[A-Z]\d$/;
   return !validPostalRegex.test(cleaned);
+}
+
+// G.5: Email format check
+function isInvalidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return !emailRegex.test(email.trim());
+}
+
+// 🚨 NEW: Suspicious behavior scoring
+function isFakeReport(report) {
+  let blocked = false;
+  let score = 0;
+  let reason = "";
+
+  if (containsOffensiveContent(report.desc)) {
+    score += 2;
+    reason = "Your description contains offensive or spam content.";
+    blocked = true;
+  }
+
+  return { blocked, score, reason };
+}
+
+// ✅ Form field validation only (keep user-friendly errors)
+function validateReportFields(report) {
+  clearAllErrors();
+
+  let hasError = false;
+
+  if (isMissingField(report)) {
+    setError("descError", "Description is required.");
+    hasError = true;
+  }
+
+  if (!report.email) {
+    setError("emailError", "Email is required.");
+    hasError = true;
+  } else if (isInvalidEmail(report.email)) {
+    setError("emailError", "Please enter a valid email address.");
+    hasError = true;
+  }
+
+  if (exceededSubmissionLimit()) {
+    setError("submitError", "Too many reports submitted. Please wait.");
+    hasError = true;
+  }
+
+  if (isOutsideServiceArea(report.postalCode)) {
+    setError("postalCodeError", "Invalid postal code format or outside supported area.");
+    hasError = true;
+  }
+
+  return hasError;
+}
+
+// 🔧 Helper: Set error message under field
+function setError(elementId, message) {
+  const el = document.getElementById(elementId);
+  if (el) el.innerText = message;
+}
+
+// 🔧 Helper: Clear all previous errors
+function clearAllErrors() {
+  const errorFields = ["emailError", "descError", "postalCodeError", "submitError"];
+  errorFields.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerText = "";
+  });
 }

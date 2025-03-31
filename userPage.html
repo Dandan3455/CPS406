@@ -54,7 +54,7 @@
   <div id="overlay"></div>
 
 
-<div id="reportModal">
+<!-- <div id="reportModal">
   <h3>Report an Issue</h3>
 
 
@@ -88,12 +88,53 @@
   <img id="imagePreview" style="display: none; max-width: 100px; margin-top: 5px;" />
 
 
-  <input type="email" id="email" placeholder="Your email (optional)" />
+  <input type="email" id="email" placeholder="Your email" />
 
 
   <button id="submitForm">Submit</button>
   <button onclick="closeModal()">Cancel</button>
+</div> -->
+
+
+<div id="reportModal">
+  <h3>Report an Issue</h3>
+
+  <input type="text" id="postalCode" placeholder="Postal Code (e.g., M5G 2C3)" required />
+  <div id="postalCodeError" class="error"></div>
+
+  <select id="type" onchange="handleTypeChange()">
+    <option value="Pothole">Pothole</option>
+    <option value="Garbage">Garbage</option>
+    <option value="Streetlight">Streetlight</option>
+    <option value="Graffiti">Graffiti</option>
+    <option value="Noise">Noise Complaint</option>
+    <option value="Water Leak">Water Leak</option>
+    <option value="Broken Sidewalk">Broken Sidewalk</option>
+    <option value="Other">Other</option>
+  </select>
+
+  <input
+    type="text"
+    id="customType"
+    placeholder="Please specify the issue type"
+    style="display: none; margin-top: 5px;"
+  />
+
+  <textarea id="desc" placeholder="Describe the issue in detail" rows="4" required></textarea>
+  <div id="descError" class="error"></div>
+
+  <input type="file" id="image" />
+  <img id="imagePreview" style="display: none; max-width: 100px; margin-top: 5px;" />
+
+  <input type="email" id="email" placeholder="Your email (required)" />
+  <div id="emailError" class="error"></div>
+
+  <div id="submitError" class="error" style="margin-top: 10px;"></div>
+
+  <button id="submitForm">Submit</button>
+  <button onclick="closeModal()">Cancel</button>
 </div>
+
 
 
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>

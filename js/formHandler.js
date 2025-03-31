@@ -29,6 +29,7 @@ function handleTypeChange() {
   }
 }
 
+
 function submitForm(events, map, renderEvents) {
   const desc = document.getElementById('desc').value.trim();
   const type = document.getElementById('type').value;
@@ -43,49 +44,64 @@ function submitForm(events, map, renderEvents) {
   if (imageInput.files && imageInput.files[0]) {
     imageURL = URL.createObjectURL(imageInput.files[0]);
   }
+
   const finalType = (type === 'Other' && customTypeInput !== '') ? customTypeInput : type;
   const latlng = pendingLatlng || map.getCenter();
 
-
-  if (isFakeReport({ desc, postalCode, email, latlng, type })) {
-    alert("Submission blocked: suspicious or invalid report.");
-    return;
-  }
-
-  if (!desc) {
-    alert("Please enter a description.");
-    return;
-  }
-
-
-  /* 
-
-  commented these out due to them being implemented in the socket.io functions, just
-  remove the block comment if that is removed
-
-  const marker = L.marker(latlng).addTo(map).bindPopup(desc);
-  events.push({ title: desc, type, status: 'pending', latlng, email, postalCode });
-  renderEvents();
-  */
-  const newReport = { 
-    title:        desc,
-    type:         finalType,
-    postalCode:   postalCode,
-    image:        imageURL,
-    email:        email,
-    status:       status,
-    address:      address || '',
-    latlng:       latlng
+  const report = {
+    desc,
+    postalCode,
+    email,
+    latlng,
+    type: finalType,
   };
-    if (window.socket?.emit) {
-    socket.emit('newReport', newReport);// storing report in json on node server
+
+  // Step 1: Validate required fields (email, desc, postalCode)
+  if (validateReportFields(report)) return;
+
+  // Step 2: Behavior-based scoring
+  const result = isFakeReport(report);
+  const emailKey = email.toLowerCase();
+
+  if (!window.emailScores) window.emailScores = {};
+  if (!window.emailScores[emailKey]) window.emailScores[emailKey] = 0;
+
+  window.emailScores[emailKey] += result.score;
+
+  // Step 3: If email is blocked
+  if (window.emailScores[emailKey] >= 5) {
+    setError("submitError", "Your email has been blocked due to repeated abuse.");
+    return;
+  }
+
+  // Step 4: If this report triggered offensive score
+  if (result.blocked) {
+    const current = window.emailScores[emailKey];
+    setError("submitError", `${result.reason} You've been penalized 2 points. Current score: ${current}/5.`);
+    return;
+  }
+
+  // Step 5: Submit report
+  const newReport = {
+    // title: desc,
+    desc: desc,
+    type: finalType,
+    postalCode: postalCode,
+    image: imageURL,
+    email: email,
+    status: status,
+    address: address || '',
+    latlng: latlng,
+  };
+
+  if (window.socket?.emit) {
+    socket.emit('newReport', newReport); // storing report on server
   } else {
-    const marker = L.marker(latlng).addTo(map).bindPopup(desc);// store locally if user is not hosting server
-    events.push({ title: desc, type, status: 'pending', latlng, email, postalCode });
+    const marker = L.marker(latlng).addTo(map).bindPopup(desc);
+    events.push(newReport);
     renderEvents();
-}
+  }
+
   closeModal();
   alert("Thanks for your report!");
 }
-
-

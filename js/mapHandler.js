@@ -48,24 +48,65 @@ function initSocket() { // for storing JSON on node server
 const eventList = document.getElementById('eventList');
 
 // 渲染事件列表
+// function renderEvents() {
+//   eventList.innerHTML = '';
+//   events.forEach((e, i) => {
+//     const div = document.createElement('div');
+//     // Add class "done" if status is done; and you can also add a class for duplicate if desired.
+//     let classes = 'event';
+//     if (e.status === 'done') classes += ' done';
+//     if (e.status === 'duplicate') classes += ' duplicate';
+//     div.className = classes;
+//     div.innerHTML = `<strong>${e.title}</strong><br>Type: ${e.type}<br>Status: ${e.status}<br>`;
+//     eventList.appendChild(div);
+//   });
+// }
+
+
 function renderEvents() {
   eventList.innerHTML = '';
   events.forEach((e, i) => {
     const div = document.createElement('div');
-    // Add class "done" if status is done; and you can also add a class for duplicate if desired.
     let classes = 'event';
     if (e.status === 'done') classes += ' done';
     if (e.status === 'duplicate') classes += ' duplicate';
     div.className = classes;
-    div.innerHTML = `<strong>${e.title}</strong><br>Type: ${e.type}<br>Status: ${e.status}<br>`;
+
+    div.innerHTML = `
+      <strong>📍 ${e.postalCode || 'Unknown Location'}</strong><br>
+      Details: ${e.desc}<br>
+      Type: ${e.type}<br>
+      Status: ${e.status}
+    `;
+
     eventList.appendChild(div);
   });
 }
+
 
 // When the map is clicked, open the report modal with the clicked latlng.
 map.on('click', e => {
   openModal(e.latlng);
 });
+
+map.on('click', async e => {
+  const latlng = e.latlng;
+  openModal(latlng);
+
+  try {
+    const postalCode = await getPostalCodeFromLatLng(latlng.lat, latlng.lng);
+    if (isTorontoPostalCode(postalCode)) {
+      document.getElementById('postalCode').value = postalCode;
+    } else {
+      alert('Selected location is out of Toronto range.');
+    }
+  } catch (err) {
+    console.error('Failed to fetch postal code:', err);
+    alert('Failed to fetch postal code. Please try again.');
+  }
+});
+
+
 
 // When the report button is clicked, open the report modal.
 document.getElementById('reportBtn').addEventListener('click', () => {
@@ -85,7 +126,24 @@ document.getElementById('searchPostalCode').addEventListener('click', () => {
 
 // Draw markers for any existing events.
 events.forEach(e => {
-  L.marker(e.latlng).addTo(map).bindPopup(e.title);
+  // L.marker(e.latlng).addTo(map).bindPopup(e.title);
+  L.marker(e.latlng).addTo(map).bindPopup(e.desc);
 });
 
 renderEvents();
+
+async function getPostalCodeFromLatLng(lat, lon) {
+  const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
+  const response = await fetch(url);
+  const data = await response.json();
+
+  if (data.address && data.address.postcode) {
+    return data.address.postcode;
+  } else {
+    throw new Error("Postal code not found");
+  }
+}
+
+function isTorontoPostalCode(postalCode) {
+  return postalCode.trim().toUpperCase().startsWith("M");
+}

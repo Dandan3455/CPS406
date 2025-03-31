@@ -149,7 +149,8 @@ function searchPostalCode(map) {
             const div = document.createElement("div")
             div.innerHTML = `
 <div class="displayReport">
-    <strong>Title: ${ev.title}</strong>
+    
+    <strong>Description: ${ev.desc}</strong>
     <p>Type: ${ev.type}</p>
     <p>Postal Code: ${ev.postalCode}</p>
     <p>Email: ${ev.email}</p>
