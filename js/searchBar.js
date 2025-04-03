@@ -2,90 +2,6 @@ let range;
 let circles = [];
 let eventsInRange = [];
 
-//M6J 2V5
-/* const testData = [
-    {
-        title: "Pothole near Midland Ave",
-        type: "Road Damage",
-        postalCode: "M1M1R5",
-        image: "pothole1.jpg",
-        email: "user1@mail.com",
-        solved: false,
-        address: "123 Midland Ave, Scarborough, ON",
-        latlng: { lat: 43.7328, lng: -79.2685 }, // ✅ ~100m away
-    },
-    {
-        title: "Cracked Sidewalk on Danforth Rd",
-        type: "Pavement Issue",
-        postalCode: "M1J3H6",
-        image: "sidewalk.jpg",
-        email: "user2@mail.com",
-        solved: true,
-        address: "456 Danforth Rd, Scarborough, ON",
-        latlng: { lat: 43.7341, lng: -79.2687 }, // ✅ ~250m away
-    },
-    {
-        title: "Traffic Light Issue at Kennedy Rd",
-        type: "Signal Issue",
-        postalCode: "M1K4A3",
-        image: "trafficlight.jpg",
-        email: "user3@mail.com",
-        solved: false,
-        address: "789 Kennedy Rd, Toronto, ON",
-        latlng: { lat: 43.7355, lng: -79.2689 }, // ✅ ~400m away
-    },
-    {
-        title: "Large Pothole on Eglinton Ave",
-        type: "Pothole",
-        postalCode: "M4A1N1",
-        image: "pothole2.jpg",
-        email: "user4@mail.com",
-        solved: false,
-        address: "202 Eglinton Ave, Toronto, ON",
-        latlng: { lat: 43.7373, lng: -79.2691 }, // ✅ ~600m away
-    },
-    {
-        title: "Broken Streetlight on Birchmount Rd",
-        type: "Lighting Issue",
-        postalCode: "M1K2J3",
-        image: "streetlight.jpg",
-        email: "user5@mail.com",
-        solved: false,
-        address: "303 Birchmount Rd, Scarborough, ON",
-        latlng: { lat: 43.7387, lng: -79.2694 }, // ✅ ~750m away
-    },
-    {
-        title: "Flooding on St. Clair Ave",
-        type: "Flooding",
-        postalCode: "M1L3Z5",
-        image: "flooding.jpg",
-        email: "user6@mail.com",
-        solved: true,
-        address: "404 St. Clair Ave, Toronto, ON",
-        latlng: { lat: 43.74, lng: -79.2698 }, // ✅ ~900m away
-    },
-    {
-        title: "Debris on Kingston Rd",
-        type: "Debris Issue",
-        postalCode: "M1N1R1",
-        image: "debris.jpg",
-        email: "user7@mail.com",
-        solved: false,
-        address: "505 Kingston Rd, Toronto, ON",
-        latlng: { lat: 43.7409, lng: -79.27 }, // ✅ ~1000m away
-    },
-    {
-        title: "Road Blockage near Lawrence Ave",
-        type: "Obstruction",
-        postalCode: "M1E2T8",
-        image: "roadblock.jpg",
-        email: "user8@mail.com",
-        solved: false,
-        address: "606 Lawrence Ave, Toronto, ON",
-        latlng: { lat: 43.743, lng: -79.2715 }, // ❌ ~1200m away (outside max range)
-    },
-]; */
-
 document.addEventListener("DOMContentLoaded", () => {
     // Setting the range value
     const rangeInput = document.getElementById("range");
@@ -100,10 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function searchPostalCode(map) {
     const postal_code = document.getElementById("postal_code").value;
-    if (postal_code.at(0)!=='M'){
+    if (postal_code.at(0) !== 'M') {
         return
     }
+    const eventsInRangeContainer = document.getElementById("events_in_range_container")
     const eventsInRangeDOM = document.getElementById("eventInRange")
+    eventsInRangeContainer.style.display = "none"
     eventsInRangeDOM.style.display = "none"
     // Grab Latitude and Longitube using postal code
     fetch(
@@ -113,9 +31,6 @@ function searchPostalCode(map) {
             return response.json();
         }
     }).then((data) => {
-        const lat = data.latt;
-        const long = data.longt;
-
         // Remove existing circles and markers from the map
         if (circles.length !== 0) {
             circles.forEach((c) => map.removeLayer(c));
@@ -126,6 +41,15 @@ function searchPostalCode(map) {
             eventsInRangeDOM.innerHTML = `<div>
                 <i class="fa-solid fa-xmark" onclick="closeEventInRangeModal()"></i>
             </div>`
+        }
+        let lat;
+        let long;
+        if (data) {
+            lat = data.latt;
+            long = data.longt;
+        } else {
+            lat = 43.660624;
+            long = -79.365955;
         }
 
         // Navigate to the specified postal code and putting all the markers for all the valid locations
@@ -144,25 +68,30 @@ function searchPostalCode(map) {
                 eventsInRange.push(e)
             }
         })
-        console.log(eventsInRange)
         eventsInRange.forEach(ev => {
             const div = document.createElement("div")
             div.innerHTML = `
-<div class="displayReport">
-    
+<div class='individual-event ${ev.status === "Solved" ? "solved-edge" : "pending-edge"}'>
     <strong>Description: ${ev.desc}</strong>
-    <p>Type: ${ev.type}</p>
-    <p>Postal Code: ${ev.postalCode}</p>
-    <p>Email: ${ev.email}</p>
-    <p>Status: ${ev.status}</p>
-    <p>Address: ${ev.address}</p>
-    <p>Latitude: ${ev.latlng.lat}</p>
-    <p>Longitude: ${ev.latlng.lng}</p>
-</div>`
+    <i>Type: ${ev.type}</i>
+    <i>Address: ${ev.address}</i>
+    <div class="event-status-mark">
+        ${ev.status === "Solved" ?
+                    '<i class="fa-solid fa-check" style="color: #028a0f;"></i>' :
+                    '<i class="fa-solid fa-hourglass-half" style="color: #FFD43B;"></i>'}
+        <i>${ev.status}</i>
+    </div>
+</div>`;
+            div.querySelector(".individual-event").addEventListener("click", () => {
+                viewEvent(ev)
+            });
             eventsInRangeDOM.appendChild(div)
         })
-        if (eventsInRange.length !== 0){
-            eventsInRangeDOM.style.display = "block"
+        if (eventsInRange.length !== 0) {
+            setTimeout(() => {
+                eventsInRangeContainer.style.display = "block"
+                eventsInRangeDOM.style.display = "block"
+            }, 750)
         }
     }).catch((err) => {
         console.log(err)
@@ -193,5 +122,25 @@ function getMapRadius() {
 }
 
 function closeEventInRangeModal() {
+    document.getElementById("events_in_range_container").style.display = "none"
     document.getElementById("eventInRange").style.display = "none"
+}
+
+function viewEvent(ev) {
+    console.log("View Event: ", ev)
+    const individualEvent = document.getElementById("individual-event-view")
+    individualEvent.style.display = "block"
+    individualEvent.innerHTML = `
+<i class="fa-solid fa-xmark" onclick="closeIndividualEventModal()"></i>
+<div>
+    <h2>${ev.desc}</h2>
+    <h4><i>${ev.type}</i></h4>
+    <p>${ev.postalCode}<br/>${ev.status}</p>
+    <img src="${ev.image}">
+</div>
+`
+}
+
+function closeIndividualEventModal() {
+    document.getElementById("individual-event-view").style.display = "none"
 }
