@@ -124,21 +124,23 @@ function getMapRadius() {
 function closeEventInRangeModal() {
     document.getElementById("events_in_range_container").style.display = "none"
     document.getElementById("eventInRange").style.display = "none"
+    closeIndividualEventModal()
 }
 
 function viewEvent(ev) {
-    console.log("View Event: ", ev)
     const individualEvent = document.getElementById("individual-event-view")
-    individualEvent.style.display = "block"
-    individualEvent.innerHTML = `
-<i class="fa-solid fa-xmark" onclick="closeIndividualEventModal()"></i>
-<div>
-    <h2>${ev.desc}</h2>
-    <h4><i>${ev.type}</i></h4>
-    <p>${ev.postalCode}<br/>${ev.status}</p>
-    <img src="${ev.image}">
-</div>
+    document.getElementById("individual-event-view-header").textContent = `Report: ${ev.desc}`
+    document.getElementById("individual-event-view-subheader").textContent = `Category: ${ev.type}`
+    document.getElementById("individual-event-view-location").textContent = `Postal Code: ${ev.postalCode}`
+    document.getElementById("individual-event-view-status").innerHTML = `
+Status: <i>${ev.status}</i>
+${ev.status === "Solved" ?
+            '<i class="fa-solid fa-check" style="color: #028a0f;"></i>' :
+            '<i class="fa-solid fa-hourglass-half" style="color: #FFD43B;"></i>'}
 `
+    document.getElementById("individual-event-view-image").src = ev.image
+    document.getElementById("individual-event-view-image").style.maxWidth = "100%"
+    individualEvent.style.display = "block"
 }
 
 function closeIndividualEventModal() {

@@ -41,7 +41,7 @@ body {
 .search_postal_code i {
   position: absolute;
   top: 29px;
-  right: -10px;
+  right: -15px;
   color: #444444;
 }
 
@@ -125,58 +125,71 @@ body {
   z-index: 2000;
   overflow-y: scroll;
   display: none;
+  animation: scaleUp 0.25s ease-in-out forwards;
 }
 
 .events-in-range-container {
-    background-color: rgba(0,0,0,0.3);
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    display: none;
-    z-index: 1000;
+  background-color: rgba(0,0,0,0.3);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  display: none;
+  z-index: 1000;
+}
+
+@keyframes scaleUp {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.00);
+    opacity: 1;
+  }
 }
 
 .individual-event-view {
-    border-radius: 10px;
-    position: fixed;
-    width: 500px;
-    max-height: 600px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    border: 1px solid #ccc;
-    padding: 2em;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    z-index: 2000;
-    overflow-y: scroll;
-    display: none;
+  border-radius: 10px;
+  position: fixed;
+  width: 500px;
+  max-height: 600px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.25);
+  background: white;
+  border: 1px solid #ccc;
+  padding: 2em;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  z-index: 2000;
+  overflow-y: scroll;
+  display: none;
+  animation: scaleUp 0.25s ease-in-out forwards;
 }
 
 @media (max-width: 700px) {
-    .search_postal_code {
-        width: 40vw;
-    }
-    .events-in-range {
-        max-width: 70vw;
-    }
-    .event-status-mark {
-        position: static;
-        align-items: center;
-        padding-top: 5px;
-    }
+  .search_postal_code {
+    width: 40vw;
+  }
+  .events-in-range {
+    max-width: 70vw;
+  }
+  .event-status-mark {
+    position: static;
+    align-items: center;
+    padding-top: 5px;
+  }
 }
 
 @media (max-width: 575px) {
-    .search_postal_code {
-        width: 35vw;
-    }
+  .search_postal_code {
+    width: 35vw;
+  }
 }
 
 @media (max-width: 420px) {
-    .search_postal_code {
-        width: 30vw;
-    }
+  .search_postal_code {
+    width: 30vw;
+  }
 }
 
 /* Close icon in the event modal */
