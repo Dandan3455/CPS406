@@ -17,8 +17,9 @@ body {
 .search_postal_code {
   position: absolute;
   top: 50px;
-  left: 18%;
-  transform: translateX(-50%);
+  left: 50px;
+  width: 45vw;
+  max-width: 500px;
   background: white;
   padding: 10px;
   background-color: transparent;
@@ -26,9 +27,9 @@ body {
 }
 
 .search_postal_code input[type="text"] {
-  width: 380px;
+  width: 100%;
   margin: 5px auto;
-  padding: 12px;
+  padding: 12px 25px;
   font-size: 16px;
   border: none;
   outline: none;
@@ -38,9 +39,14 @@ body {
 }
 
 .search_postal_code i {
-  position: fixed;
+  position: absolute;
   top: 29px;
-  left: 90%;
+  right: -15px;
+  color: #444444;
+}
+
+.search_postal_code i:hover {
+    color: black;
 }
 
 .search_postal_code i:hover {
@@ -63,27 +69,133 @@ body {
   justify-content: center;
 }
 
+/* Individual event card style */
+.individual-event {
+  padding: 10px 1.5em;
+  margin: 20px;
+  border-radius: 8px;
+  border-width: 2px;
+  border-style: solid;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.solved-edge {
+  border-color: #74b72e;
+  box-shadow: 0px 0px 3px 3px rgba(0, 200, 0, 0.2);
+}
+
+.pending-edge {
+  border-color: #FFD43B;
+  box-shadow: 0px 0px 3px 3px rgba(255, 255, 0, 0.4);
+}
+
+.individual-event:hover {
+    cursor: pointer;
+}
+
+.individual-event strong {
+    padding-bottom: 5px;
+}
+
+.event-status-mark {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+}
+
 .events-in-range {
+  border-radius: 10px;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;
-  height: 600px;
-  max-width: 90%;
+  width: 500px;
+  max-height: 600px;
   background: white;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-  display: none;
+  border: 1px solid #ccc;
+  padding: 2em;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  z-index: 2000;
   overflow-y: scroll;
+  display: none;
+  animation: scaleUp 0.25s ease-in-out forwards;
+}
+
+.events-in-range-container {
+  background-color: rgba(0,0,0,0.3);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  display: none;
+  z-index: 1000;
+}
+
+@keyframes scaleUp {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.00);
+    opacity: 1;
+  }
+}
+
+.individual-event-view {
+  border-radius: 10px;
+  position: fixed;
+  width: 500px;
+  max-height: 600px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.25);
+  background: white;
+  border: 1px solid #ccc;
+  padding: 2em;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  z-index: 2000;
+  overflow-y: scroll;
+  display: none;
+  animation: scaleUp 0.25s ease-in-out forwards;
+}
+
+@media (max-width: 700px) {
+  .search_postal_code {
+    width: 40vw;
+  }
+  .events-in-range {
+    max-width: 70vw;
+  }
+  .event-status-mark {
+    position: static;
+    align-items: center;
+    padding-top: 5px;
+  }
+}
+
+@media (max-width: 575px) {
+  .search_postal_code {
+    width: 35vw;
+  }
+}
+
+@media (max-width: 420px) {
+  .search_postal_code {
+    width: 30vw;
+  }
 }
 
 /* Close icon in the event modal */
-.events-in-range i.fa-xmark {
+i.fa-xmark {
   position: absolute;
-  top: 10px;
+  top: 15px;
   right: 15px;
   font-size: 20px;
   cursor: pointer;
@@ -93,14 +205,6 @@ body {
 
 .events-in-range i.fa-xmark:hover {
   color: black;
-}
-
-/* Individual event card style */
-.displayReport {
-  padding: 10px;
-  margin: 10px;
-  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2); /* Even shadow all around */
-  border-radius: 8px;
 }
 
 .nav-item {
