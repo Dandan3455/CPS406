@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cypress Report System</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      padding: 1em;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    #inputForm {
+      margin-bottom: 1em;
+    }
+    #eventInput {
+      width: 70%;
+      padding: 0.5em;
+    }
+    #eventList .event {
+      border-bottom: 1px solid #ddd;
+      padding: 0.5em 0;
+      margin-bottom: 0.5em;
+    }
+    /* Status styles */
+    #eventList .event.done {
+      background-color: #e0ffe0;
+    }
+    #eventList .event.deleted {
+      background-color: #ffcccc;
+    }
+    button {
+      margin-left: 0.5em;
+    }
+  </style>
+</head>
+<body>
+  <h2>Ongoing Events</h2>
+  
+  <div id="inputForm">
+    <input type="text" id="eventInput" placeholder="Enter event description" />
+    <button id="addEventBtn">Add Event</button>
+  </div>
+  
+  <div id="eventList"></div>
+  
+  <script>
+    let events = [];
+    const eventList = document.getElementById('eventList');
+
+    function renderEvents() {
+      eventList.innerHTML = '';
+      events.forEach((e, i) => {
+        // Create event container with class based on status
+        const div = document.createElement('div');
+        div.className = 'event ' + e.status; // possible statuses: pending, done, deleted
+        div.innerHTML = `<strong>${e.title}</strong> - Status: ${e.status}`;
+
+        // Toggle Status button always appears.
+        const toggleBtn = document.createElement('button');
+        // Label: if deleted, offer to restore; else toggle between pending and done.
+        if (e.status === 'deleted') {
+          toggleBtn.innerText = 'Restore to Pending';
+        } else if (e.status === 'pending') {
+          toggleBtn.innerText = 'Mark Done';
+        } else if (e.status === 'done') {
+          toggleBtn.innerText = 'Mark Pending';
+        }
+        toggleBtn.onclick = () => {
+          if (e.status === 'deleted') {
+            events[i].status = 'pending';
+          } else if (e.status === 'pending') {
+            events[i].status = 'done';
+          } else if (e.status === 'done') {
+            events[i].status = 'pending';
+          }
+          renderEvents();
+        };
+        div.appendChild(toggleBtn);
+
+        // Delete/Restore button
+        const delRestoreBtn = document.createElement('button');
+        if (e.status !== 'deleted') {
+          delRestoreBtn.innerText = 'Delete';
+          delRestoreBtn.onclick = () => {
+            events[i].status = 'deleted';
+            renderEvents();
+          };
+        } else {
+          delRestoreBtn.innerText = 'Mark Done';
+          delRestoreBtn.onclick = () => {
+            events[i].status = 'done';
+            renderEvents();
+          };
+        }
+        div.appendChild(delRestoreBtn);
+        
+        eventList.appendChild(div);
+      });
+    }
+
+    document.getElementById('addEventBtn').addEventListener('click', () => {
+      const eventInput = document.getElementById('eventInput');
+      const title = eventInput.value.trim();
+      if (title !== '') {
+        events.push({ title, status: 'pending' });
+        eventInput.value = '';
+        renderEvents();
+      }
+    });
+
+    // Initial render of events
+    renderEvents();
+  </script>
+</body>
+</html>
