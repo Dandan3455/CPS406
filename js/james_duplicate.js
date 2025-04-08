@@ -38,7 +38,7 @@
       if (event.latlng && newEvent.latlng) {
         const distance = getDistance(event.latlng, newEvent.latlng);
         if (distance < DUPLICATE_THRESHOLD && event.type === newEvent.type) {
-          duplicateOf = event.desc;
+          duplicateOf = event.postalCode;
           break;
         }
 

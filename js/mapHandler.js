@@ -17,7 +17,7 @@ fetch('/events.json')
     data.forEach(item => events.push(item));
     renderEvents();
     // Draw initial markers from the JSON.
-    events.forEach(e => L.marker(e.latlng).addTo(map).bindPopup(e.title));
+    events.forEach(e => L.marker(e.latlng).addTo(map).bindPopup(e.referencenumber));
     initSocket();
   })
   .catch(err => console.error('Failed to load events.json:', err));
@@ -30,12 +30,12 @@ function initSocket() { // for storing JSON on node server
     events.length = 0;
     serverEvents.forEach(item => events.push(item));
     renderEvents();
-    events.forEach(e => L.marker(e.latlng).addTo(map).bindPopup(e.title));
+    events.forEach(e => L.marker(e.latlng).addTo(map).bindPopup(e.desc));
   });
 
   window.socket.on('reportAdded', report => {
-    events.push(report);
-    L.marker(report.latlng).addTo(map).bindPopup(report.title);
+    events.unshift(report);
+    L.marker(report.latlng).addTo(map).bindPopup(report.desc);
     renderEvents();
   });
 
@@ -71,12 +71,13 @@ function renderEvents() {
     if (e.status === 'done') classes += ' done';
     if (e.status === 'duplicate') classes += ' duplicate';
     div.className = classes;
-
+    const ref = e.referencenumber || e["referencenumber"];
     div.innerHTML = `
       <strong>📍 ${e.postalCode || 'Unknown Location'}</strong><br>
       Details: ${e.desc}<br>
       Type: ${e.type}<br>
-      Status: ${e.status}
+      Status: ${e.status}<br>
+      ReferenceNumber: ${ref}
     `;
 
     eventList.appendChild(div);
@@ -124,11 +125,7 @@ document.getElementById('searchPostalCode').addEventListener('click', () => {
   searchPostalCode(map)
 })
 
-// Draw markers for any existing events.
-events.forEach(e => {
-  // L.marker(e.latlng).addTo(map).bindPopup(e.title);
-  L.marker(e.latlng).addTo(map).bindPopup(e.desc);
-});
+
 
 renderEvents();
 
