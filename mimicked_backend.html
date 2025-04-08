@@ -1,119 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cypress Report System</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      padding: 1em;
-    }
-    h2 {
-      margin-top: 0;
-    }
-    #inputForm {
-      margin-bottom: 1em;
-    }
-    #eventInput {
-      width: 70%;
-      padding: 0.5em;
-    }
-    #eventList .event {
-      border-bottom: 1px solid #ddd;
-      padding: 0.5em 0;
-      margin-bottom: 0.5em;
-    }
-    /* Status styles */
-    #eventList .event.done {
-      background-color: #e0ffe0;
-    }
-    #eventList .event.deleted {
-      background-color: #ffcccc;
-    }
-    button {
-      margin-left: 0.5em;
-    }
-  </style>
-</head>
-<body>
-  <h2>Ongoing Events</h2>
-  
-  <div id="inputForm">
-    <input type="text" id="eventInput" placeholder="Enter event description" />
-    <button id="addEventBtn">Add Event</button>
-  </div>
-  
-  <div id="eventList"></div>
-  
-  <script>
-    let events = [];
-    const eventList = document.getElementById('eventList');
-
-    function renderEvents() {
-      eventList.innerHTML = '';
-      events.forEach((e, i) => {
-        // Create event container with class based on status
-        const div = document.createElement('div');
-        div.className = 'event ' + e.status; // possible statuses: pending, done, deleted
-        div.innerHTML = `<strong>${e.title}</strong> - Status: ${e.status}`;
-
-        // Toggle Status button always appears.
-        const toggleBtn = document.createElement('button');
-        // Label: if deleted, offer to restore; else toggle between pending and done.
-        if (e.status === 'deleted') {
-          toggleBtn.innerText = 'Restore to Pending';
-        } else if (e.status === 'pending') {
-          toggleBtn.innerText = 'Mark Done';
-        } else if (e.status === 'done') {
-          toggleBtn.innerText = 'Mark Pending';
-        }
-        toggleBtn.onclick = () => {
-          if (e.status === 'deleted') {
-            events[i].status = 'pending';
-          } else if (e.status === 'pending') {
-            events[i].status = 'done';
-          } else if (e.status === 'done') {
-            events[i].status = 'pending';
-          }
-          renderEvents();
-        };
-        div.appendChild(toggleBtn);
-
-        // Delete/Restore button
-        const delRestoreBtn = document.createElement('button');
-        if (e.status !== 'deleted') {
-          delRestoreBtn.innerText = 'Delete';
-          delRestoreBtn.onclick = () => {
-            events[i].status = 'deleted';
-            renderEvents();
-          };
-        } else {
-          delRestoreBtn.innerText = 'Mark Done';
-          delRestoreBtn.onclick = () => {
-            events[i].status = 'done';
-            renderEvents();
-          };
-        }
-        div.appendChild(delRestoreBtn);
-        
-        eventList.appendChild(div);
-      });
-    }
-
-    document.getElementById('addEventBtn').addEventListener('click', () => {
-      const eventInput = document.getElementById('eventInput');
-      const title = eventInput.value.trim();
-      if (title !== '') {
-        events.push({ title, status: 'pending' });
-        eventInput.value = '';
-        renderEvents();
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cypress Report System – Backend Admin</title>
+    <style>
+      /* Basic styling */
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        padding: 1em;
+        background: #f4f4f4;
       }
-    });
+      h2 {
+        margin-top: 0;
+      }
+      #eventList {
+        margin-top: 1em;
+      }
+      .event {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 1em;
+        margin-bottom: 1em;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .event.solved {
+        border-color: #74b72e;
+        background-color: #e0ffe0;
+      }
+      .event.in-progress {
+        border-color: #FFD43B;
+        background-color: #fffacd;
+      }
+      .event.deleted {
+        border-color: #ff3333;
+        background-color: #ffd6d6;
+      }
+      .event div {
+        margin-bottom: 0.25em;
+      }
+      .buttons {
+        margin-top: 0.5em;
+      }
+      button {
+        margin-right: 0.5em;
+        padding: 0.4em 0.8em;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      button.state-change {
+        background-color: #3498db;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Ongoing Events</h2>
+    <div id="eventList"></div>
 
-    // Initial render of events
-    renderEvents();
-  </script>
-</body>
+    <!-- Socket.IO client library -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      let events = [];
+
+      // List of possible statuses (in lower-case for consistency).
+      const possibleStatuses = ["pending", "in progress", "solved"];
+
+      // Render all events with two state-change buttons each.
+      function renderEvents() {
+        const eventList = document.getElementById("eventList");
+        eventList.innerHTML = ""; // Clear the list.
+
+        events.forEach((e, i) => {
+          // For display, add a CSS class based on the status.
+          let statusClass = e.status.toLowerCase().replace(" ", "-");
+          const div = document.createElement("div");
+          div.className = "event " + statusClass;
+          
+          // Build event details including referencenumber, email, and timestamp.
+          div.innerHTML =
+            "<div><strong>Reference Number:</strong> " + (e.referencenumber || "N/A") + "</div>" +
+            "<div><strong>Postal Code:</strong> " + (e.postalCode || "Unknown") + "</div>" +
+            "<div><strong>Type:</strong> " + (e.type || "N/A") + "</div>" +
+            "<div><strong>Description:</strong> " + (e.desc || "N/A") + "</div>" +
+            "<div><strong>Status:</strong> " + e.status + "</div>" +
+            "<div><strong>Email:</strong> " + (e.email || "N/A") + "</div>" +
+            "<div><strong>Time:</strong> " + (e.time || "N/A") + "</div>";
+
+          // Create a container for two state-change buttons.
+          const btnContainer = document.createElement("div");
+          btnContainer.className = "buttons";
+
+          // Determine the two alternative statuses.
+          let currentStatus = e.status.toLowerCase();
+          let availableStatuses = possibleStatuses.filter(s => s !== currentStatus);
+
+          // For each alternate status, create a button.
+          availableStatuses.forEach(targetStatus => {
+            const btn = document.createElement("button");
+            btn.className = "state-change";
+            // Capitalize first letter for the button label.
+            let label = targetStatus.charAt(0).toUpperCase() + targetStatus.slice(1);
+            btn.innerText = "Set to " + label;
+            btn.onclick = () => {
+              socket.emit("toggleStatus", { index: i, status: targetStatus });
+            };
+            btnContainer.appendChild(btn);
+          });
+
+          div.appendChild(btnContainer);
+          eventList.appendChild(div);
+        });
+      }
+
+      // Fetch initial events from the server.
+      fetch("/events.json")
+        .then(response => response.json())
+        .then(data => {
+          events = data;
+          renderEvents();
+        })
+        .catch(err => console.error("Error fetching events:", err));
+
+      // Listen for status updates.
+      socket.on("statusToggled", ({ index, status }) => {
+        if (typeof events[index] !== "undefined") {
+          events[index].status = status;
+          renderEvents();
+        }
+      });
+
+      // Listen for new report events.
+      socket.on("reportAdded", report => {
+        events.push(report);
+        renderEvents();
+      });
+    </script>
+  </body>
 </html>
