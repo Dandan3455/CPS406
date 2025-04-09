@@ -50,7 +50,7 @@ Language Used:
 JavaScript, HTML
 
 Setting up:
-This is for a locally hosted server on your own computer. It is ideal to launch it with node.js, but it is currently possible to directly open up the HTML file without losing any functionality (except for saving/syncing data across sessions, which you need the server) as of 25 March 2025.
+This is for a locally hosted server on your computer. 
 1. Make sure you have node.js installed; if not, install it on this website https://nodejs.org/en/download.
 2. Open a terminal and navigate to the root directory of the project
 3. Run "npm install"
