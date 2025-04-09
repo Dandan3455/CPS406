@@ -5,6 +5,7 @@ Cypress is an automated system that displays problems on the streets. To simplif
 
 This system aims to solve the issue where citizen have to go through a complicated process to reach the right department to submit a report, and reported problems aren't accessible to other citizens.
 
+```
 Therefore, the system will implement the following functionality:
 		- A draggable map that allows zoom in/out to view reported problems (marked by a pin)
 		- A form system that allows user to enter details regarding the report, in addition to their preferred contact methods (SMS/Email) to receive updates
@@ -16,7 +17,7 @@ Therefore, the system will implement the following functionality:
 		- Needs to filter out repeated submission of the same problem (while keeping all of the users who reported the issue updated)
 		- Needs to validate if the report is valid
 		- Contact the related department and notify them of the issue
-
+```
 
 Group Members:
 | Name            | Student Number |
