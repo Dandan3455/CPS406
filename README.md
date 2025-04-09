@@ -28,35 +28,22 @@ Group Members:
 | Elton Wong      | 501165692      |
 
 
-Project directory:
-CPS406_main
-    |-css
-      |-style.css
-    |-js
-      |-fakeCheck.js
-      |-formHandler.js
-      |-james_duplicate.js
-      |-mapHandler.js
-    |Data.json
-    |README.md
-    |server.js
-    |package.json 
-    |userPage.html
-
-Project Content:
-**css** - a folder of all css files
-	style.css - CSS rules to style/format the webpage
-
-**js** - a folder for all js script that implements functions in our webpage
-	fakeCheck.js - a js script containing functions to check if reports are valid
-	formHandler.js - a js script containing functions related to the report from (submitting, saving, checking for errors)
-	james_duplicate.js - a js script containing functions to detect duplicate reports
-	mapHandler.js - a js script containing functions regarding the map (open form on click, passing coordinates, show pins for reported events)
- 
-Data.json - a json file with all the test data to mimic previous user reports
-server.js - a js files containg needed commands to host a local server
-package.json - a json file with needed package for server.js to function properly
-userPage.html - the main webpage that the user interacts with
+CPS406_main/
+│
+├── css/
+│   └── style.css              # Styles for the main user interface
+│
+├── js/
+│   ├── fakeCheck.js           # Functions to validate report content
+│   ├── formHandler.js         # Handles submission and validation of report forms
+│   ├── james_duplicate.js     # Detects and processes duplicate issue reports
+│   └── mapHandler.js          # Manages map interactions and displays report pins
+│
+├── Data.json                  # Test data simulating previous user reports
+├── userPage.html              # Main HTML file users interact with
+├── server.js                  # Node.js server script for handling data and syncing
+├── package.json               # Defines dependencies and scripts for the server
+└── README.md                  # Project documentation
 
 Language Used:
 JavaScript, HTML
@@ -64,7 +51,7 @@ JavaScript, HTML
 Setting up:
 This is for a locally hosted server on your own computer. It is ideal to launch it with node.js, but it is currently possible to directly open up the HTML file without losing any functionality (except for saving/syncing data across sessions, which you need the server) as of 25 March 2025.
 1. Make sure you have node.js installed; if not, install it on this website https://nodejs.org/en/download.
-2. Open terminal and navigate to the root directory of the project
+2. Open a terminal and navigate to the root directory of the project
 3. Run "npm install"
 4. Run "npm start"
 5. Go to a web browser and type in http://localhost:3000/, and the website should be there
