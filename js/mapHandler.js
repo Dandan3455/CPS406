@@ -17,7 +17,7 @@ fetch('/events.json')
     data.forEach(item => events.push(item));
     renderEvents();
     // Draw initial markers from the JSON.
-    events.forEach(e => L.marker(e.latlng).addTo(map).bindPopup(e.referencenumber));
+    events.forEach(e => L.marker(e.latlng).addTo(map).bindPopup(e.desc));
     initSocket();
   })
   .catch(err => console.error('Failed to load events.json:', err));
@@ -71,6 +71,11 @@ function renderEvents() {
     if (e.status === 'done') classes += ' done';
     if (e.status === 'duplicate') classes += ' duplicate';
     div.className = classes;
+    if (e.status === 'Solved') {
+      div.style.backgroundColor = 'lightgreen';
+    } else if (e.status === 'Pending') {
+      div.style.backgroundColor = 'lightyellow';
+    }
     const ref = e.referencenumber || e["referencenumber"];
     div.innerHTML = `
       <strong>📍 ${e.postalCode || 'Unknown Location'}</strong><br>

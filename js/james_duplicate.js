@@ -2,7 +2,7 @@
 
 (function() {
   // Duplicate detection threshold in meters.
-  const DUPLICATE_THRESHOLD = 100;
+  const DUPLICATE_THRESHOLD = 50;
 
   // Haversine formula: calculates distance (in meters) between two lat/lng points.
   function getDistance(latlng1, latlng2) {
@@ -38,7 +38,7 @@
       if (event.latlng && newEvent.latlng) {
         const distance = getDistance(event.latlng, newEvent.latlng);
         if (distance < DUPLICATE_THRESHOLD && event.type === newEvent.type) {
-          duplicateOf = event.postalCode;
+          duplicateOf = event.referencenumber;
           break;
         }
 
