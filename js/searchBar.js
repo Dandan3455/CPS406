@@ -52,10 +52,18 @@ function searchPostalCode(map) {
             long = -79.365955;
         }
 
+        const latlng = L.latLng(lat, long)
+
         // Navigate to the specified postal code and putting all the markers for all the valid locations
         map.flyTo([lat, long], 17 - Math.ceil(range / 200) / 2, {
             duration: 0.9,
         });
+        events.forEach((e) => {
+            const distance = map.distance(latlng, L.latLng(e.latlng.lat, e.latlng.lng))
+            if (distance <= range) {
+                eventsInRange.push(e)
+            }
+        })
         let circle = L.circle([lat, long], {
             color: "#0f67aa",
             fillColor: "#52ceff",
@@ -63,17 +71,13 @@ function searchPostalCode(map) {
             radius: getMapRadius(),
         }).addTo(map);
         circles.push(circle);
-        events.forEach((e) => {
-            if (isWithinRange(lat, long, e.latlng.lat, e.latlng.lng)) {
-                eventsInRange.push(e)
-            }
-        })
         eventsInRange.forEach(ev => {
             const div = document.createElement("div")
             div.innerHTML = `
 <div class='individual-event ${ev.status === "Solved" ? "solved-edge" : "pending-edge"}'>
-    <strong>Description: ${ev.desc}</strong>
+    <strong>Reference Number: ${ev.referencenumber}</strong>
     <i>Type: ${ev.type}</i>
+    <i>Postal Code: ${ev.postalCode}</i>
     <i>Address: ${ev.address}</i>
     <div class="event-status-mark">
         ${ev.status === "Solved" ?
@@ -98,27 +102,8 @@ function searchPostalCode(map) {
     });
 }
 
-function haversine(lat1, lon1, lat2, lon2) {
-    const earthRadius = 6371000;
-    const rad = Math.PI / 180;
-    const phi1 = lat1 * rad;
-    const phi2 = lat2 * rad;
-    const deltaPhi = (lat2 - lat1) * rad;
-    const deltaLambda = (lon2 - lon1) * rad;
-    const a =
-        Math.sin(deltaPhi / 2) ** 2 +
-        Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) ** 2;
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return earthRadius * c;
-}
-
-function isWithinRange(lat1, lon1, lat2, lon2) {
-    const dist = haversine(lat1, lon1, lat2, lon2);
-    return dist <= range;
-}
-
 function getMapRadius() {
-    return 1.20 * range
+    return 1.10 * range
 }
 
 function closeEventInRangeModal() {
@@ -128,10 +113,18 @@ function closeEventInRangeModal() {
 }
 
 function viewEvent(ev) {
+    const date = new Date(ev.time);
+    const pad = (n) => n.toString().padStart(2, '0');
+    const formatted = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
     const individualEvent = document.getElementById("individual-event-view")
-    document.getElementById("individual-event-view-header").textContent = `Report: ${ev.desc}`
-    document.getElementById("individual-event-view-subheader").textContent = `Category: ${ev.type}`
-    document.getElementById("individual-event-view-location").textContent = `Postal Code: ${ev.postalCode}`
+    document.getElementById("individual-event-view-header").textContent = `Report: ${ev.referencenumber}`
+    document.getElementById("individual-event-view-subheader").textContent = `Type: ${ev.type}`
+    document.getElementById("individual-event-view-time").textContent = `Time: ${formatted}`
+    document.getElementById("individual-event-view-description").textContent = `Description: ${ev.desc}`
+    document.getElementById("individual-event-view-address").textContent = `Address: ${ev.address}`
+    document.getElementById("individual-event-view-postalCode").textContent = `Postal Code: ${ev.postalCode}`
+    document.getElementById("individual-event-view-govDept").textContent = `Government Department: ${ev.govDept}`
+    document.getElementById("individual-event-view-govDeptEmail").textContent = `Department Email: ${ev.govDeptEmail}`
     document.getElementById("individual-event-view-status").innerHTML = `
 Status: <i>${ev.status}</i>
 ${ev.status === "Solved" ?
