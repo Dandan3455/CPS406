@@ -27,6 +27,7 @@ Group Members:
 | Sara Gomes      | 501184278      |
 | Elton Wong      | 501165692      |
 
+
 Project directory:
 CPS406_main
     |-css
@@ -41,8 +42,6 @@ CPS406_main
     |server.js
     |package.json 
     |userPage.html
-    
-    
 
 Project Content:
 **css** - a folder of all css files
