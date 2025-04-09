@@ -27,7 +27,7 @@ Group Members:
 | Sara Gomes      | 501184278      |
 | Elton Wong      | 501165692      |
 
-
+```
 CPS406_main/
 │
 ├── css/
@@ -44,6 +44,7 @@ CPS406_main/
 ├── server.js                  # Node.js server script for handling data and syncing
 ├── package.json               # Defines dependencies and scripts for the server
 └── README.md                  # Project documentation
+```
 
 Language Used:
 JavaScript, HTML
