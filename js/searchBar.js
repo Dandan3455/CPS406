@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function searchPostalCode(map) {
     const postal_code = document.getElementById("postal_code").value.replace(" ", "");
-    if (postal_code.at(0) !== 'M') {
+    if (postal_code.length !== 6 || postal_code.at(0) !== 'M') {
         return
     }
     const eventsInRangeContainer = document.getElementById("events_in_range_container")
