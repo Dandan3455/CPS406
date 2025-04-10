@@ -39,7 +39,6 @@ function isInvalidEmail(email) {
   return !emailRegex.test(email.trim());
 }
 
-// 🚨 NEW: Suspicious behavior scoring
 function isFakeReport(report) {
   let blocked = false;
   let score = 0;
@@ -54,7 +53,6 @@ function isFakeReport(report) {
   return { blocked, score, reason };
 }
 
-// ✅ Form field validation only (keep user-friendly errors)
 function validateReportFields(report) {
   clearAllErrors();
 
@@ -86,13 +84,11 @@ function validateReportFields(report) {
   return hasError;
 }
 
-// 🔧 Helper: Set error message under field
 function setError(elementId, message) {
   const el = document.getElementById(elementId);
   if (el) el.innerText = message;
 }
 
-// 🔧 Helper: Clear all previous errors
 function clearAllErrors() {
   const errorFields = ["emailError", "descError", "postalCodeError", "submitError"];
   errorFields.forEach(id => {
