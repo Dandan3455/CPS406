@@ -30,9 +30,10 @@
   const originalPush = events.push;
 
   // Override the push method so that new events get marked as duplicate if needed.
-  events.push = function(newEvent) {
+  const originalUnshift = events.unshift;
+  events.unshift = function(newEvent) {
+    // Duplicate detection code (similar to push)
     let duplicateOf = null;
-    // Loop through current events.
     for (let i = 0; i < events.length; i++) {
       const event = events[i];
       if (event.latlng && newEvent.latlng) {
@@ -41,17 +42,16 @@
           duplicateOf = event.referencenumber;
           break;
         }
-
       }
     }
     if (duplicateOf) {
       newEvent.status = "duplicate";
       newEvent.duplicateOf = duplicateOf;
       newEvent.desc = newEvent.desc + " (duplication of \"" + duplicateOf + "\")";
-
     }
-    return originalPush.call(events, newEvent);
+    return originalUnshift.call(events, newEvent);
   };
+  
 
   // Optionally override renderEvents to style duplicate events with an orange background.
   if (typeof window.renderEvents === "function") {

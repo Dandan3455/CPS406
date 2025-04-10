@@ -67,7 +67,7 @@
     <div id="eventList"></div>
     
     <!-- Load duplicate detection script first -->
-    <script src="js/james_duplicate.js" defer></script>
+    <script src="js/james_duplicate2.js" defer></script>
     <!-- Socket.IO client library -->
     <script src="/socket.io/socket.io.js"></script>
     <script defer>
@@ -143,9 +143,12 @@
 
       // Listen for new report events.
       socket.on("reportAdded", report => {
-        events.unshift(report);
-        renderEvents();
+        events.push(report);
+      // Optionally, sort or reverse events so that new ones appear first.
+        events.sort((a, b) => new Date(b.time) - new Date(a.time));
+         renderEvents();
       });
+
     </script>
   </body>
 </html>

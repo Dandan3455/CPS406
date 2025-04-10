@@ -76,6 +76,9 @@ function renderEvents() {
     } else if (e.status === 'Pending') {
       div.style.backgroundColor = 'lightyellow';
     }
+    else if (e.status === 'duplicate') {
+      div.style.backgroundColor = 'orange';
+    }
     const ref = e.referencenumber || e["referencenumber"];
     div.innerHTML = `
       <strong>📍 ${e.postalCode || 'Unknown Location'}</strong><br>
