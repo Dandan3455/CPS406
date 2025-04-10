@@ -6,7 +6,7 @@
     "postalCode": "M5A0A1",
     "image": "https://via.placeholder.com/100",
     "email": "user1@example.com",
-    "status": "in progress",
+    "status": "Solved",
     "address": "Random Address 1, Toronto, ON",
     "latlng": {
       "lat": 43.660624,
@@ -336,91 +336,6 @@
       "lng": -79.376264
     },
     "time": "2025-04-08T18:08:39.401Z",
-    "govDept": "Public Works Department",
-    "govDeptEmail": "publicworks@example.com"
-  },
-  {
-    "referencenumber": "REF121",
-    "desc": "123",
-    "type": "Pothole",
-    "postalCode": "M5C 1R9",
-    "image": "blob:http://localhost:3000/f8ed9914-3467-4a9d-9b83-405fd2cdf079",
-    "email": "jamesfang1116@gmail.com",
-    "status": "pending",
-    "address": "",
-    "latlng": {
-      "lat": 43.65305450768013,
-      "lng": -79.37533185681185
-    },
-    "time": "2025-04-09T00:21:43.614Z",
-    "govDept": "Public Works Department",
-    "govDeptEmail": "publicworks@example.com"
-  },
-  {
-    "referencenumber": "REF122",
-    "desc": "pothole problem",
-    "type": "Pothole",
-    "postalCode": "M5G 2C4",
-    "image": "",
-    "email": "jamesfang1116@gmail.com",
-    "status": "pending",
-    "address": "",
-    "latlng": {
-      "lat": 43.65770416503904,
-      "lng": -79.3892396674983
-    },
-    "time": "2025-04-10T02:49:51.764Z",
-    "govDept": "Public Works Department",
-    "govDeptEmail": "publicworks@example.com"
-  },
-  {
-    "referencenumber": "REF123",
-    "desc": "pothole problem2",
-    "type": "Pothole",
-    "postalCode": "M5G 2C4",
-    "image": "",
-    "email": "james.fang@torontomu.ca",
-    "status": "pending",
-    "address": "",
-    "latlng": {
-      "lat": 43.657944788593284,
-      "lng": -79.38936307836364
-    },
-    "time": "2025-04-10T02:50:12.877Z",
-    "govDept": "Public Works Department",
-    "govDeptEmail": "publicworks@example.com"
-  },
-  {
-    "referencenumber": "REF124",
-    "desc": "123",
-    "type": "Pothole",
-    "postalCode": "M5H 1T1",
-    "image": "",
-    "email": "jamesfang1116@gmail.com",
-    "status": "pending",
-    "address": "",
-    "latlng": {
-      "lat": 43.64925844368466,
-      "lng": -79.38233251259476
-    },
-    "time": "2025-04-10T02:53:03.530Z",
-    "govDept": "Public Works Department",
-    "govDeptEmail": "publicworks@example.com"
-  },
-  {
-    "referencenumber": "REF125",
-    "desc": "123",
-    "type": "Pothole",
-    "postalCode": "M5X 1C7",
-    "image": "",
-    "email": "jamesfang1116@gmail.com",
-    "status": "pending",
-    "address": "",
-    "latlng": {
-      "lat": 43.64896344297954,
-      "lng": -79.3818174063741
-    },
-    "time": "2025-04-10T02:53:07.674Z",
     "govDept": "Public Works Department",
     "govDeptEmail": "publicworks@example.com"
   }
