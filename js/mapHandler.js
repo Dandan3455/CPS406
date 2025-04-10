@@ -47,22 +47,6 @@ function initSocket() { // for storing JSON on node server
 
 const eventList = document.getElementById('eventList');
 
-// 渲染事件列表
-// function renderEvents() {
-//   eventList.innerHTML = '';
-//   events.forEach((e, i) => {
-//     const div = document.createElement('div');
-//     // Add class "done" if status is done; and you can also add a class for duplicate if desired.
-//     let classes = 'event';
-//     if (e.status === 'done') classes += ' done';
-//     if (e.status === 'duplicate') classes += ' duplicate';
-//     div.className = classes;
-//     div.innerHTML = `<strong>${e.title}</strong><br>Type: ${e.type}<br>Status: ${e.status}<br>`;
-//     eventList.appendChild(div);
-//   });
-// }
-
-
 function renderEvents() {
   eventList.innerHTML = '';
   events.forEach((e, i) => {
@@ -123,7 +107,6 @@ document.getElementById('reportBtn').addEventListener('click', () => {
 });
 
 // When the submit button is clicked, call submitForm.
-// (submitForm is defined in your formHandler.js.)
 document.getElementById('submitForm').addEventListener('click', () => {
   submitForm(events, map, renderEvents);
 });
