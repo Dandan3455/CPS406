@@ -84,7 +84,6 @@ function submitForm(events, map, renderEvents) {
   const newRefNumber = "REF" + String(events.length + 101).padStart(3, '0');
   // Step 5: Submit report
   const newReport = {
-    // title: desc,
     referencenumber: newRefNumber,
     desc: desc,
     type: finalType,
