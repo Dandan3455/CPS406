@@ -34,6 +34,10 @@
         border-color: #FFD43B;
         background-color: #fffacd;
       }
+      .event.duplicate {
+        border-color: darkorange;
+        background-color: rgb(231, 186, 103);
+      }
       .event.deleted {
         border-color: #ff3333;
         background-color: #ffd6d6;
@@ -58,12 +62,15 @@
     </style>
   </head>
   <body>
-    <h2>Ongoing Events</h2>
+    <h2 class="nav-item">Ongoing Events</h2>
+    <h2 class="nav-item"><a href="userPage.html">Homepage </a></h2>
     <div id="eventList"></div>
-
+    
+    <!-- Load duplicate detection script first -->
+    <script src="js/james_duplicate2.js" defer></script>
     <!-- Socket.IO client library -->
     <script src="/socket.io/socket.io.js"></script>
-    <script>
+    <script defer>
       const socket = io();
       let events = [];
 
@@ -103,7 +110,6 @@
           availableStatuses.forEach(targetStatus => {
             const btn = document.createElement("button");
             btn.className = "state-change";
-            // Capitalize first letter for the button label.
             let label = targetStatus.charAt(0).toUpperCase() + targetStatus.slice(1);
             btn.innerText = "Set to " + label;
             btn.onclick = () => {
@@ -121,7 +127,8 @@
       fetch("/events.json")
         .then(response => response.json())
         .then(data => {
-          events = data;
+          events.length = 0; // clear the array while preserving the same reference
+          data.forEach(item => events.push(item)); // Use push so the duplicate logic runs if applicable
           renderEvents();
         })
         .catch(err => console.error("Error fetching events:", err));
@@ -137,8 +144,11 @@
       // Listen for new report events.
       socket.on("reportAdded", report => {
         events.push(report);
-        renderEvents();
+      // Optionally, sort or reverse events so that new ones appear first.
+        events.sort((a, b) => new Date(b.time) - new Date(a.time));
+         renderEvents();
       });
+
     </script>
   </body>
 </html>

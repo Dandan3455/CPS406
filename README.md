@@ -37,11 +37,14 @@ CPS406_main/
 ├── js/
 │   ├── fakeCheck.js           # Functions to validate report content
 │   ├── formHandler.js         # Handles submission and validation of report forms
+│   ├── james_duplicate2.js    # Detects and processes duplicate issue reports
 │   ├── james_duplicate.js     # Detects and processes duplicate issue reports
+│   ├── searchBar.js           # Implements a search bar function in the UI
 │   └── mapHandler.js          # Manages map interactions and displays report pins
 │
 ├── Data.json                  # Test data simulating previous user reports
 ├── userPage.html              # Main HTML file users interact with
+├── nunucjed_backend.html      # A HTML file containing the admin page where all reports can be viewed, edited and deleted
 ├── server.js                  # Node.js server script for handling data and syncing
 ├── package.json               # Defines dependencies and scripts for the server
 └── README.md                  # Project documentation
@@ -57,3 +60,4 @@ This is for a locally hosted server on your computer.
 3. Run "npm install"
 4. Run "npm start"
 5. Go to a web browser and type in http://localhost:3000/, and the website should be there
+6. For access to the admin page, type in http://localhost:3000/backend and admin page should show with all reports

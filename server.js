@@ -142,7 +142,7 @@ io.on('connection', (socket) => {
     console.log('New report added:', report);
 
     const subject = 'New Report Created';
-    const message = `Your report (ID: ${report.id}) has been created at ${report.time} and is currently pending.`;
+    const message = `Your report (ID: ${report.referencenumber}) has been created at ${report.time} and is currently pending.`;
     sendEmail(report, subject, message);
   });
 
