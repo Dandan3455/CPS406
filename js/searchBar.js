@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function searchPostalCode(map) {
-    const postal_code = document.getElementById("postal_code").value;
+    const postal_code = document.getElementById("postal_code").value.replace(" ", "");
     if (postal_code.at(0) !== 'M') {
         return
     }
